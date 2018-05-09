@@ -73,7 +73,7 @@ public class Main extends SimpleApplication implements ActionListener {
 
         dl = new DirectionalLight();
         dl.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal());
-     //   rootNode.addLight(dl);
+     //  rootNode.addLight(dl);
     }
 
     private PhysicsSpace getPhysicsSpace() {
