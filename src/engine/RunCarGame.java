@@ -1,6 +1,5 @@
-package mygame;
+package engine;
 
-import com.jme3.app.SettingsDialog;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
@@ -20,10 +19,9 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.system.AppSettings;
-import mygame.Physics;
+import engine.physics.PhysicsGame;
 
-public class Main extends SimpleApplication implements ActionListener {
+public class RunCarGame extends SimpleApplication implements ActionListener {
 
     private BulletAppState bulletAppState;
     private VehicleControl player;
@@ -35,7 +33,7 @@ public class Main extends SimpleApplication implements ActionListener {
     private Node carNode;
 
     public static void main(String[] args) {
-        Main app = new Main();       
+        RunCarGame app = new RunCarGame();
         app.start();
     }
 
@@ -63,7 +61,7 @@ public class Main extends SimpleApplication implements ActionListener {
         flyCam.setMoveSpeed(10);
 
         setupKeys();
-        Physics.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+        PhysicsGame.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
 //        setupFloor();
         buildPlayer();
 
@@ -73,7 +71,7 @@ public class Main extends SimpleApplication implements ActionListener {
 
         dl = new DirectionalLight();
         dl.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal());
-     //  rootNode.addLight(dl);
+        //  rootNode.addLight(dl);
     }
 
     private PhysicsSpace getPhysicsSpace() {
@@ -98,7 +96,6 @@ public class Main extends SimpleApplication implements ActionListener {
 //        rootNode.attachChild(tb);
 //        getPhysicsSpace().add(tb);
 //    }
-
     private Geometry findGeom(Spatial spatial, String name) {
         if (spatial instanceof Node) {
             Node node = (Node) spatial;
@@ -124,7 +121,7 @@ public class Main extends SimpleApplication implements ActionListener {
         final float mass = 400;
 
         //Load model and get chassis Geometry
-        carNode = (Node)assetManager.loadModel("Models/Ferrari/Car.scene");
+        carNode = (Node) assetManager.loadModel("Models/Ferrari/Car.scene");
         carNode.setShadowMode(ShadowMode.Cast);
         Geometry chasis = findGeom(carNode, "Car");
         BoundingBox box = (BoundingBox) chasis.getModelBound();
