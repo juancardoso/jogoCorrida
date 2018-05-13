@@ -21,7 +21,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import engine.physics.PhysicsGame;
 
-public class RunCarGame extends SimpleApplication implements ActionListener {
+public class CarRunGame extends SimpleApplication implements ActionListener {
 
     private BulletAppState bulletAppState;
     private VehicleControl player;
@@ -33,7 +33,7 @@ public class RunCarGame extends SimpleApplication implements ActionListener {
     private Node carNode;
 
     public static void main(String[] args) {
-        RunCarGame app = new RunCarGame();
+        CarRunGame app = new CarRunGame();
         app.start();
     }
 
