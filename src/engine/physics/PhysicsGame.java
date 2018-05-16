@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame;
+package engine.physics;
 
 /**
  *
  * @author juan
  */
-
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
@@ -35,10 +34,12 @@ import com.jme3.texture.Texture;
  *
  * @author normenhansen
  */
-public class Physics {
+public class PhysicsGame {
 
     /**
-     * creates a simple physics test world with a floor, an obstacle and some test boxes
+     * creates a simple physics test world with a floor, an obstacle and some
+     * test boxes
+     *
      * @param rootNode
      * @param assetManager
      * @param space
@@ -84,7 +85,7 @@ public class Physics {
 //        space.add(sphereGeometry);
 
     }
-    
+
     public static void createPhysicsTestWorldSoccer(Node rootNode, AssetManager assetManager, PhysicsSpace space) {
         AmbientLight light = new AmbientLight();
         light.setColor(ColorRGBA.LightGray);
@@ -117,29 +118,30 @@ public class Physics {
             space.add(ballGeometry);
         }
         {
-        //immovable Box with mesh collision shape
-        Box box = new Box(1, 1, 1);
-        Geometry boxGeometry = new Geometry("Box", box);
-        boxGeometry.setMaterial(material);
-        boxGeometry.setLocalTranslation(4, 1, 2);
-        boxGeometry.addControl(new RigidBodyControl(new MeshCollisionShape(box), 0));
-        rootNode.attachChild(boxGeometry);
-        space.add(boxGeometry);
+            //immovable Box with mesh collision shape
+            Box box = new Box(1, 1, 1);
+            Geometry boxGeometry = new Geometry("Box", box);
+            boxGeometry.setMaterial(material);
+            boxGeometry.setLocalTranslation(4, 1, 2);
+            boxGeometry.addControl(new RigidBodyControl(new MeshCollisionShape(box), 0));
+            rootNode.attachChild(boxGeometry);
+            space.add(boxGeometry);
         }
         {
-        //immovable Box with mesh collision shape
-        Box box = new Box(1, 1, 1);
-        Geometry boxGeometry = new Geometry("Box", box);
-        boxGeometry.setMaterial(material);
-        boxGeometry.setLocalTranslation(4, 3, 4);
-        boxGeometry.addControl(new RigidBodyControl(new MeshCollisionShape(box), 0));
-        rootNode.attachChild(boxGeometry);
-        space.add(boxGeometry);
+            //immovable Box with mesh collision shape
+            Box box = new Box(1, 1, 1);
+            Geometry boxGeometry = new Geometry("Box", box);
+            boxGeometry.setMaterial(material);
+            boxGeometry.setLocalTranslation(4, 3, 4);
+            boxGeometry.addControl(new RigidBodyControl(new MeshCollisionShape(box), 0));
+            rootNode.attachChild(boxGeometry);
+            space.add(boxGeometry);
         }
     }
 
     /**
      * creates a box geometry with a RigidBodyControl
+     *
      * @param assetManager
      * @return
      */
@@ -156,6 +158,7 @@ public class Physics {
 
     /**
      * creates a sphere geometry with a RigidBodyControl
+     *
      * @param assetManager
      * @return
      */
@@ -172,6 +175,7 @@ public class Physics {
 
     /**
      * creates an empty node with a RigidBodyControl
+     *
      * @param manager
      * @param shape
      * @param mass
@@ -185,7 +189,9 @@ public class Physics {
     }
 
     /**
-     * creates the necessary inputlistener and action to shoot balls from teh camera
+     * creates the necessary inputlistener and action to shoot balls from teh
+     * camera
+     *
      * @param app
      * @param rootNode
      * @param space
@@ -219,4 +225,3 @@ public class Physics {
         app.getInputManager().addListener(actionListener, "shoot");
     }
 }
-
