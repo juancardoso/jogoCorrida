@@ -37,6 +37,14 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
 
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
+        app.showSettings = false;
+        AppSettings settings = new AppSettings(true);
+        settings.put("Width", 1280);
+        settings.put("Height", 720);
+        settings.put("Title", "Car Run");
+        settings.put("VSync", false); //Anti-Aliasing
+        settings.put("Samples", 4);
+        app.setSettings(settings);
         app.start();
     }
 
@@ -60,7 +68,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
         setDisplayFps(false);
-        setDisplayStatView(false);        
+        setDisplayStatView(false);
 //        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 //        cam.setFrustumFar(150f);
 //        flyCam.setMoveSpeed(10);
