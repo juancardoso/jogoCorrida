@@ -45,23 +45,32 @@ public class PhysicsGame {
      * @param space
      */
     public static void createPhysicsTestWorld(Node rootNode, AssetManager assetManager, PhysicsSpace space) {
-        AmbientLight light = new AmbientLight();
-        light.setColor(ColorRGBA.LightGray);
-        rootNode.addLight(light);
+//        AmbientLight light = new AmbientLight();
+//        light.setColor(ColorRGBA.LightGray);
+//        rootNode.addLight(light);
 
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        material.setTexture("ColorMap", assetManager.loadTexture("Textures/texturaChao.jpg"));
+//        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+//        material.setTexture("ColorMap", assetManager.loadTexture("Textures/texturaChao.jpg"));
 
-        Box floorBox = new Box(140, 0.25f, 140);
-        Geometry floorGeometry = new Geometry("Floor", floorBox);
-        floorGeometry.setMaterial(material);
-        floorGeometry.setLocalTranslation(0, -5, 0);
+//        Box floorBox = new Box(140, 0.25f, 140);
+//        Geometry floorGeometry = new Geometry("Floor", floorBox);
+//        floorGeometry.setMaterial(material);
+//        floorGeometry.setLocalTranslation(0, -5, 0);
+
+        Node loadedNode = (Node) assetManager.loadModel("Scene/corridaScene.j3o");
+        loadedNode.setName("map");
+        loadedNode.setLocalTranslation(100, -10, 100);
+        loadedNode.setLocalScale(2);
+        rootNode.attachChild(loadedNode);
+        loadedNode.addControl(new RigidBodyControl(0));
+        space.add(loadedNode);
+
 //        Plane plane = new Plane();
 //        plane.setOriginNormal(new Vector3f(0, 0.25f, 0), Vector3f.UNIT_Y);
 //        floorGeometry.addControl(new RigidBodyControl(new PlaneCollisionShape(plane), 0));
-        floorGeometry.addControl(new RigidBodyControl(0));
-        rootNode.attachChild(floorGeometry);
-        space.add(floorGeometry);
+//        floorGeometry.addControl(new RigidBodyControl(0));
+//        rootNode.attachChild(floorGeometry);
+        
 //
 //        //movable boxes
 //        for (int i = 0; i < 12; i++) {
