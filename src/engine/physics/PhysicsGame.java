@@ -22,6 +22,7 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -59,7 +60,8 @@ public class PhysicsGame {
 
         Node loadedNode = (Node) assetManager.loadModel("Scene/corridaScene.j3o");
         loadedNode.setName("map");
-        loadedNode.setLocalTranslation(100, -10, 100);
+        loadedNode.setLocalTranslation(70, -5, 100);
+        loadedNode.setLocalRotation(new Vector3f(0,0.5f,0));
         loadedNode.setLocalScale(0.5f);
         rootNode.attachChild(loadedNode);
         loadedNode.addControl(new RigidBodyControl(0));

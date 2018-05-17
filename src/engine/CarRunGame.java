@@ -16,6 +16,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -31,7 +32,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private float steeringValue = 0;
     private float accelerationValue = 0;
     private Node carNode;
-
+    private Node camNode;
+    
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
         app.start();
@@ -57,8 +59,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
 //        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
-        cam.setFrustumFar(150f);
-        flyCam.setMoveSpeed(10);
+//        cam.setFrustumFar(150f);
+//        flyCam.setMoveSpeed(10);
 
         setupKeys();
         PhysicsGame.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
@@ -174,7 +176,11 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         player.getWheel(2).setFrictionSlip(4);
         player.getWheel(3).setFrictionSlip(4);
 
+        camNode = new CameraNode("Camera Node", cam);
+        carNode.attachChild(camNode);
+        camNode.setLocalTranslation(new Vector3f(0, +5, +15));
         rootNode.attachChild(carNode);
+        camNode.lookAt(carNode.getLocalTranslation(), Vector3f.UNIT_Y);
         getPhysicsSpace().add(player);
     }
 
@@ -223,8 +229,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-        cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-        Vector3f p1 = new Vector3f(carNode.getLocalTranslation().x,carNode.getLocalTranslation().y+5,carNode.getLocalTranslation().z+15);
-        cam.setLocation(p1);
+//        cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
+//        Vector3f p1 = new Vector3f(carNode.getLocalTranslation().x,carNode.getLocalTranslation().y+5,carNode.getLocalTranslation().z+15);
+//        cam.setLocation(p1);
     }
 }
