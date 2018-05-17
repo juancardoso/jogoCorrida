@@ -20,6 +20,7 @@ import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.system.AppSettings;
 import engine.physics.PhysicsGame;
 
 public class CarRunGame extends SimpleApplication implements ActionListener {
@@ -33,17 +34,25 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private float accelerationValue = 0;
     private Node carNode;
     private Node camNode;
-    
+
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
+        app.showSettings = false;
+        AppSettings settings = new AppSettings(true);
+        settings.put("Width", 1280);
+        settings.put("Height", 720);
+        settings.put("Title", "Car Run");
+        settings.put("VSync", false); //Anti-Aliasing
+        settings.put("Samples", 4);
+        app.setSettings(settings);
         app.start();
     }
 
     private void setupKeys() {
-        inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_H));
-        inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_K));
-        inputManager.addMapping("Ups", new KeyTrigger(KeyInput.KEY_U));
-        inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_J));
+        inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
+        inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addMapping("Ups", new KeyTrigger(KeyInput.KEY_UP));
+        inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_DOWN));
         inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
         inputManager.addListener(this, "Lefts");
@@ -58,6 +67,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     public void simpleInitApp() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
+        setDisplayFps(false);
+        setDisplayStatView(false);
 //        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 //        cam.setFrustumFar(150f);
 //        flyCam.setMoveSpeed(10);
