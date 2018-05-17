@@ -60,7 +60,7 @@ public class PhysicsGame {
         Node loadedNode = (Node) assetManager.loadModel("Scene/corridaScene.j3o");
         loadedNode.setName("map");
         loadedNode.setLocalTranslation(100, -10, 100);
-        loadedNode.setLocalScale(2);
+        loadedNode.setLocalScale(0.5f);
         rootNode.attachChild(loadedNode);
         loadedNode.addControl(new RigidBodyControl(0));
         space.add(loadedNode);
