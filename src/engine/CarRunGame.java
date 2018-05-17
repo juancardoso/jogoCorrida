@@ -224,5 +224,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     @Override
     public void simpleUpdate(float tpf) {
         cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
+        Vector3f p1 = new Vector3f(carNode.getLocalTranslation().x,carNode.getLocalTranslation().y+5,carNode.getLocalTranslation().z+15);
+        cam.setLocation(p1);
     }
 }
