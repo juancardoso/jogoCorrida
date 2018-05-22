@@ -34,7 +34,9 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private float accelerationValue = 0;
     private Node carNode;
     private Node camNode;
-
+    private int voltas = 0;
+    private boolean volta1 = false,volta2 = false;
+    
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
         app.showSettings = false;
@@ -240,8 +242,38 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleUpdate(float tpf) {
-//        cam.lookAt(carNode.getWorldTranslation(), Vector3f.UNIT_Y);
-//        Vector3f p1 = new Vector3f(carNode.getLocalTranslation().x,carNode.getLocalTranslation().y+5,carNode.getLocalTranslation().z+15);
-//        cam.setLocation(p1);
+        verificarVolta();
+    }
+    
+    public void verificarVolta(){
+        if(!volta2){
+            volta2 = validarVolta(2);
+        }else {
+            volta1 = validarVolta(1);
+        }
+            
+        if(volta1 && volta2){
+            volta1 = false;
+            volta2 = false;
+            voltas++;
+        }
+        
+        System.out.println(voltas);
+    }
+    
+    public boolean validarVolta(int verify){
+        Vector3f pos = carNode.getLocalTranslation();
+        
+        if(verify == 1){
+            if((pos.getX() >= -9 && pos.getX() < 4)  && (pos.getZ() >= -10 && pos.getZ() < 10)){
+                return true;
+            }
+        }else{
+            if((pos.getX() <= -150.0 && pos.getX() > -195)  && (pos.getZ() >= -7 && pos.getZ() < 27.9)){
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
