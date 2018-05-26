@@ -79,7 +79,7 @@ public class ManagerUI extends SimpleApplication {
                                         text(new TextBuilder() {
 
                                             {
-                                                text("Car");
+                                                text("Car Run");
                                                 font("Interface/verdana-48-regular.fnt");
                                                 color("#8fff");
                                                 style("base-font");
@@ -185,7 +185,7 @@ public class ManagerUI extends SimpleApplication {
                                         text(new TextBuilder() {
 
                                             {
-                                                text("Run");
+                                                text("On The Run");
                                                 font("Interface/verdana-48-regular.fnt");
                                                 color("#8fff");
                                                 style("base-font");
@@ -236,7 +236,6 @@ public class ManagerUI extends SimpleApplication {
         Screen screen = new ScreenBuilder("demo") {
 
             {
-                inputMapping("de.lessvoid.nifty.input.mapping.DefaultInputMapping"); // this will enable Keyboard events for the screen controller
                 layer(new LayerBuilder() {
 
                     {

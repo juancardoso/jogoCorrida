@@ -37,15 +37,15 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private float accelerationValue = 0;
     private Node carNode;
     private Node camNode;
-    private int voltas = 0;
+    private int laps = 0;
     private boolean volta1 = false, volta2 = false;
 
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
         app.showSettings = false;
         AppSettings settings = new AppSettings(true);
-        settings.put("Width", 1280);
-        settings.put("Height", 720);
+        settings.put("Width", 1200);
+        settings.put("Height", 600);
         settings.put("Title", "Car Run");
         settings.put("VSync", false); //Anti-Aliasing
         settings.put("Samples", 4);
@@ -56,8 +56,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private void setupKeys() {
         inputManager.addMapping("Lefts", new KeyTrigger(KeyInput.KEY_LEFT));
         inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
-        inputManager.addMapping("Ups", new KeyTrigger(KeyInput.KEY_UP));
-        inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_DOWN));
+        inputManager.addMapping("Ups", new KeyTrigger(KeyInput.KEY_W));
+        inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
         inputManager.addListener(this, "Lefts");
@@ -98,48 +98,20 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
 
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        setDisplayFps(false);
-        setDisplayStatView(false);
-//        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
-//        cam.setFrustumFar(150f);
-//        flyCam.setMoveSpeed(10);
 
         setupKeys();
         PhysicsGame.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
-//        setupFloor();
         buildPlayer();
 
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
         rootNode.addLight(dl);
-
-        dl = new DirectionalLight();
-        dl.setDirection(new Vector3f(0.5f, -0.1f, 0.3f).normalizeLocal());
-        //  rootNode.addLight(dl);
     }
 
     private PhysicsSpace getPhysicsSpace() {
         return bulletAppState.getPhysicsSpace();
     }
 
-//    public void setupFloor() {
-//        Material mat = assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
-//        mat.getTextureParam("DiffuseMap").getTextureValue().setWrap(WrapMode.Repeat);
-////        mat.getTextureParam("NormalMap").getTextureValue().setWrap(WrapMode.Repeat);
-////        mat.getTextureParam("ParallaxMap").getTextureValue().setWrap(WrapMode.Repeat);
-//
-//        Box floor = new Box(Vector3f.ZERO, 140, 1f, 140);
-//        floor.scaleTextureCoordinates(new Vector2f(112.0f, 112.0f));
-//        Geometry floorGeom = new Geometry("Floor", floor);
-//        floorGeom.setShadowMode(ShadowMode.Receive);
-//        floorGeom.setMaterial(mat);
-//
-//        PhysicsNode tb = new PhysicsNode(floorGeom, new MeshCollisionShape(floorGeom.getMesh()), 0);
-//        tb.setLocalTranslation(new Vector3f(0f, -6, 0f));
-////        tb.attachDebugShape(assetManager);
-//        rootNode.attachChild(tb);
-//        getPhysicsSpace().add(tb);
-//    }
     private Geometry findGeom(Spatial spatial, String name) {
         if (spatial instanceof Node) {
             Node node = (Node) spatial;
@@ -284,10 +256,10 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         if (volta1 && volta2) {
             volta1 = false;
             volta2 = false;
-            voltas++;
+            laps++;
         }
 
-//        System.out.println(voltas);
+//        System.out.println(laps);
     }
 
     public boolean validarVolta(int verify) {
