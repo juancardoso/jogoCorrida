@@ -15,13 +15,16 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import de.lessvoid.nifty.Nifty;
 import engine.physics.PhysicsGame;
+import screen.ManagerUI;
 
 public class CarRunGame extends SimpleApplication implements ActionListener {
 
@@ -35,8 +38,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private Node carNode;
     private Node camNode;
     private int voltas = 0;
-    private boolean volta1 = false,volta2 = false;
-    
+    private boolean volta1 = false, volta2 = false;
+
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
         app.showSettings = false;
@@ -67,6 +70,32 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleInitApp() {
+        /**
+         * Nifty-JME integration
+         */
+        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
+                assetManager, inputManager, audioRenderer, guiViewPort);
+        Nifty nifty = niftyDisplay.getNifty();
+        guiViewPort.addProcessor(niftyDisplay);
+        flyCam.setDragToRotate(true);
+        setDisplayFps(false);
+        setDisplayStatView(false);
+
+        /**
+         * nifty demo code
+         */
+        nifty.loadStyleFile("nifty-default-styles.xml");
+        nifty.loadControlFile("nifty-default-controls.xml");
+        nifty.registerSound("intro", "Interface/sound/19546__tobi123__Gong_mf2.wav");
+        nifty.registerMusic("credits", "Interface/sound/Loveshadow_-_Almost_Given_Up.ogg");
+        nifty.registerMouseCursor("hand", "Interface/mouse-cursor-hand.png", 5, 4);
+
+        ManagerUI.registerMenuButtonHintStyle(nifty);
+        ManagerUI.registerStyles(nifty);
+        ManagerUI.createIntroScreen(nifty);
+        ManagerUI.createGameScreen(nifty);
+        nifty.gotoScreen("start");
+
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
         setDisplayFps(false);
@@ -229,7 +258,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
             }
         } else if (binding.equals("Reset")) {
             if (value) {
-                System.out.println("Reset");
+//                System.out.println("Reset");
                 player.setPhysicsLocation(Vector3f.ZERO);
                 player.setPhysicsRotation(new Matrix3f());
                 player.setLinearVelocity(Vector3f.ZERO);
@@ -244,36 +273,36 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     public void simpleUpdate(float tpf) {
         verificarVolta();
     }
-    
-    public void verificarVolta(){
-        if(!volta2){
+
+    public void verificarVolta() {
+        if (!volta2) {
             volta2 = validarVolta(2);
-        }else {
+        } else {
             volta1 = validarVolta(1);
         }
-            
-        if(volta1 && volta2){
+
+        if (volta1 && volta2) {
             volta1 = false;
             volta2 = false;
             voltas++;
         }
-        
-        System.out.println(voltas);
+
+//        System.out.println(voltas);
     }
-    
-    public boolean validarVolta(int verify){
+
+    public boolean validarVolta(int verify) {
         Vector3f pos = carNode.getLocalTranslation();
-        
-        if(verify == 1){
-            if((pos.getX() >= -9 && pos.getX() < 4)  && (pos.getZ() >= -10 && pos.getZ() < 10)){
+
+        if (verify == 1) {
+            if ((pos.getX() >= -9 && pos.getX() < 4) && (pos.getZ() >= -10 && pos.getZ() < 10)) {
                 return true;
             }
-        }else{
-            if((pos.getX() <= -150.0 && pos.getX() > -195)  && (pos.getZ() >= -7 && pos.getZ() < 27.9)){
+        } else {
+            if ((pos.getX() <= -150.0 && pos.getX() > -195) && (pos.getZ() >= -7 && pos.getZ() < 27.9)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 }
