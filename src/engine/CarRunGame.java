@@ -102,7 +102,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         setupKeys();
         PhysicsGame.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
         buildPlayer();
-
+        
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
         rootNode.addLight(dl);

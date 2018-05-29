@@ -13,6 +13,7 @@ import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.MeshCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -22,6 +23,7 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -56,7 +58,21 @@ public class PhysicsGame {
 //        Geometry floorGeometry = new Geometry("Floor", floorBox);
 //        floorGeometry.setMaterial(material);
 //        floorGeometry.setLocalTranslation(0, -5, 0);
-
+/** An unshaded textured cube. 
+ *  Uses texture from jme3-test-data library! */ 
+        Box boxMesh = new Box(1f,0.1f,1f); 
+        Geometry boxGeo = new Geometry("A Textured Box", boxMesh); 
+        Material boxMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"); 
+        Texture monkeyTex = assetManager.loadTexture("Textures/faustop.jpeg"); 
+        boxMat.setTexture("ColorMap", monkeyTex);
+        boxGeo.setMaterial(boxMat); 
+//        boxGeo.setLocalTranslation(0,-4,-5);
+        boxGeo.setLocalTranslation(10,12,5);
+        boxGeo.setLocalScale(300,0,300);
+        boxGeo.addControl(new RigidBodyControl(new BoxCollisionShape(new Vector3f(300,0.1f,300)), 0));
+        rootNode.attachChild(boxGeo); 
+        space.add(boxGeo);
+        
         Node loadedNode = (Node) assetManager.loadModel("Scene/corridaScene.j3o");
         loadedNode.setName("map");
 
