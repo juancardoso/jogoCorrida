@@ -37,9 +37,15 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private float accelerationValue = 0;
     private Node carNode;
     private Node camNode;
-    private int laps = 0;
-    private boolean volta1 = false, volta2 = false;
-
+    private int pontos = 0;
+    private boolean volta1 = false, volta2 = false, meioPonto = true;
+    private float steeringUp = .5f;
+    private int accelerationUp = 800;
+    private float brakeUp = 40;
+    private long tempInicial = 0;
+    private boolean contInicial = false;
+    private boolean pressed = false;
+    
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
         app.showSettings = false;
@@ -59,7 +65,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         inputManager.addMapping("Ups", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Downs", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Space", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_RETURN));
+        inputManager.addMapping("Reset", new KeyTrigger(KeyInput.KEY_R));
         inputManager.addListener(this, "Lefts");
         inputManager.addListener(this, "Rights");
         inputManager.addListener(this, "Ups");
@@ -197,53 +203,93 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         camNode.lookAt(carNode.getLocalTranslation(), Vector3f.UNIT_Y);
         getPhysicsSpace().add(player);
     }
-
+    
     public void onAction(String binding, boolean value, float tpf) {
         if (binding.equals("Lefts")) {
             if (value) {
-                steeringValue += .5f;
+                steeringValue += steeringUp;
             } else {
-                steeringValue += -.5f;
+                steeringValue += steeringUp*-1;
             }
             player.steer(steeringValue);
         } else if (binding.equals("Rights")) {
             if (value) {
-                steeringValue += -.5f;
+                steeringValue += steeringUp*-1;
             } else {
-                steeringValue += .5f;
+                steeringValue += steeringUp;
             }
             player.steer(steeringValue);
         } //note that our fancy car actually goes backwards..
         else if (binding.equals("Ups")) {
             if (value) {
-                accelerationValue -= 800;
-            } else {
-                accelerationValue += 800;
+                accelerationValue -= accelerationUp;
+            } else{
+                accelerationValue += accelerationUp;
             }
+            
             player.accelerate(accelerationValue);
             player.setCollisionShape(CollisionShapeFactory.createDynamicMeshShape(findGeom(carNode, "Car")));
+            
         } else if (binding.equals("Downs")) {
             if (value) {
-                player.brake(40f);
+                player.brake(brakeUp);
             } else {
                 player.brake(0f);
             }
         } else if (binding.equals("Reset")) {
             if (value) {
-//                System.out.println("Reset");
-                player.setPhysicsLocation(Vector3f.ZERO);
-                player.setPhysicsRotation(new Matrix3f());
-                player.setLinearVelocity(Vector3f.ZERO);
-                player.setAngularVelocity(Vector3f.ZERO);
-                player.resetSuspension();
+                resetGame();
             } else {
             }
         }
     }
-
+    
+    public void resetGame(){
+        tempInicial = System.currentTimeMillis();
+        player.setPhysicsLocation(Vector3f.ZERO);
+        player.setPhysicsRotation(new Matrix3f());
+        player.setLinearVelocity(Vector3f.ZERO);
+        player.setAngularVelocity(Vector3f.ZERO);
+        player.resetSuspension();
+        pressed = false;
+        steeringUp = 0;
+        accelerationUp = 0;
+        accelerationValue = 0;
+        brakeUp = 0;
+        contInicial = true;
+        pontos = 0;
+        meioPonto = true;
+        volta1 = false;
+        volta2 = false;
+    }
+    
     @Override
     public void simpleUpdate(float tpf) {
         verificarVolta();
+        
+        //Código do programa...
+        long tempFinal = System.currentTimeMillis();
+	long dif = (tempFinal - tempInicial)/1000;
+        
+        if(dif > 90){
+            steeringUp = 0;
+            accelerationUp = 0;
+            accelerationValue = 0;
+            brakeUp = 0;
+        }
+        
+        if(contInicial){
+            if(dif > 5){
+                steeringUp = .5f;
+                accelerationUp = 800;
+                brakeUp = 40;
+                
+                tempInicial = System.currentTimeMillis();
+                contInicial = false;
+            }
+        }
+        
+        System.out.println("Pontos: "+pontos + " - Tempo: "+dif);
     }
 
     public void verificarVolta() {
@@ -256,10 +302,12 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         if (volta1 && volta2) {
             volta1 = false;
             volta2 = false;
-            laps++;
+            pontos += 100;
+            meioPonto = true;
+        }else if(volta2 && meioPonto){
+            meioPonto = false;
+            pontos += 50;
         }
-
-//        System.out.println(laps);
     }
 
     public boolean validarVolta(int verify) {
