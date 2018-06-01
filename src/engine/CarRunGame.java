@@ -23,6 +23,9 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyMethodInvoker;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import engine.physics.PhysicsGame;
 import screen.ManagerUI;
 
@@ -45,7 +48,8 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
 //    private long tempInicial = 0;
     private boolean contInicial = false;
     private boolean pressed = false;
-    private float timer = 0f;
+    private float timer = 100f;
+    private Nifty nifty = null;
 
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
@@ -82,7 +86,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
          */
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
                 assetManager, inputManager, audioRenderer, guiViewPort);
-        Nifty nifty = niftyDisplay.getNifty();
+        nifty = niftyDisplay.getNifty();
         guiViewPort.addProcessor(niftyDisplay);
         flyCam.setDragToRotate(true);
         setDisplayFps(false);
@@ -293,7 +297,56 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
             }
         }
 
-        System.out.println("Pontos: " + pontos + " - Tempo: " + (int)timer);
+//        System.out.println("Pontos: " + pontos + " - Tempo: " + (int) timer);
+        if (nifty != null) {
+            // find old text
+            Element niftyElement = nifty.getCurrentScreen().findElementByName("score");
+            // swap old with new text
+            if (niftyElement != null) {
+                niftyElement.getRenderer(TextRenderer.class).setText(Integer.toString(pontos));
+            }
+            // find old text start countdown
+            if (contInicial) {
+                niftyElement = nifty.getCurrentScreen().findElementByName("timeTitle");
+                // swap old with new text
+                if (niftyElement != null) {
+                    niftyElement.getRenderer(TextRenderer.class).setText("Start Countdown: ");
+                }
+                niftyElement = nifty.getCurrentScreen().findElementByName("timeValue");
+                // swap old with new text
+                if (niftyElement != null) {
+                    niftyElement.getRenderer(TextRenderer.class).setText(Integer.toString(5 - (int) timer));
+                }
+            } else {
+                if (timer > 90.0f) {
+                    niftyElement = nifty.getCurrentScreen().findElementByName("timeTitle");
+                    // swap old with new text
+                    if (niftyElement != null) {
+                        niftyElement.getRenderer(TextRenderer.class).setText("Time Over");
+                    }
+                    niftyElement = nifty.getCurrentScreen().findElementByName("timeValue");
+                    // swap old with new text
+                    if (niftyElement != null) {
+                        niftyElement.getRenderer(TextRenderer.class).setText("");
+                    }
+                } else {
+                    niftyElement = nifty.getCurrentScreen().findElementByName("timeTitle");
+                    // swap old with new text
+                    if (niftyElement != null) {
+                        niftyElement.getRenderer(TextRenderer.class).setText("Time: ");
+                    }
+                    niftyElement = nifty.getCurrentScreen().findElementByName("timeValue");
+                    // swap old with new text
+                    if (niftyElement != null) {
+                        niftyElement.getRenderer(TextRenderer.class).setText(Integer.toString(90 - (int) timer));
+                    }
+                }
+            }
+            niftyElement = nifty.getCurrentScreen().findElementByName("resetScreenButton");
+            if (niftyElement != null) {
+                niftyElement.getElementInteraction().getPrimary().setOnClickMethod(new NiftyMethodInvoker(nifty, "resetGame()", this));
+            }
+        }
     }
 
     public void verificarVolta() {

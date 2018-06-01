@@ -266,23 +266,46 @@ public class ManagerUI extends SimpleApplication {
                                         control(new LabelBuilder() {
 
                                             {
-                                                label("Laps: ");
+                                                label("Score: ");
                                                 font("Interface/verdana-48-regular.fnt");
                                                 color("#8fff");
+                                                height("100%");
+                                                width("150px");
                                             }
                                         });
-                                        panel(common.hspacer("7px"));
-                                        control(new LabelBuilder() {
-
+                                        panel(common.hspacer("10px"));
+                                        control(new LabelBuilder("score") {
                                             {
-                                                label(" 0 ");
+                                                label("   ");
                                                 font("Interface/verdana-48-regular.fnt");
                                                 color("#8fff");
+                                                height("100%");
+                                                width("100px");
+                                            }
+                                        });
+                                        panel(common.hspacer("30px"));
+                                        control(new LabelBuilder("timeTitle") {
+
+                                            {
+                                                label("Time: ");
+                                                font("Interface/verdana-48-regular.fnt");
+                                                color("#8fff");
+                                                height("100%");
+                                                width("250px");
+                                            }
+                                        });
+                                        control(new LabelBuilder("timeValue") {
+                                            {
+                                                label("   ");
+                                                font("Interface/verdana-48-regular.fnt");
+                                                color("#8fff");
+                                                height("100%");
+                                                width("70px");
+
                                             }
                                         });
                                         panel(common.hspacer("*"));
                                         control(new ButtonBuilder("resetScreenButton", "New Game") {
-
                                             {
                                             }
                                         });
