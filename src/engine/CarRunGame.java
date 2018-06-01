@@ -42,10 +42,11 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
     private float steeringUp = .5f;
     private int accelerationUp = 800;
     private float brakeUp = 40;
-    private long tempInicial = 0;
+//    private long tempInicial = 0;
     private boolean contInicial = false;
     private boolean pressed = false;
-    
+    private float timer = 0f;
+
     public static void main(String[] args) {
         CarRunGame app = new CarRunGame();
         app.showSettings = false;
@@ -108,7 +109,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         setupKeys();
         PhysicsGame.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
         buildPlayer();
-        
+
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.5f, -1f, -0.3f).normalizeLocal());
         rootNode.addLight(dl);
@@ -203,18 +204,18 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         camNode.lookAt(carNode.getLocalTranslation(), Vector3f.UNIT_Y);
         getPhysicsSpace().add(player);
     }
-    
+
     public void onAction(String binding, boolean value, float tpf) {
         if (binding.equals("Lefts")) {
             if (value) {
                 steeringValue += steeringUp;
             } else {
-                steeringValue += steeringUp*-1;
+                steeringValue += steeringUp * -1;
             }
             player.steer(steeringValue);
         } else if (binding.equals("Rights")) {
             if (value) {
-                steeringValue += steeringUp*-1;
+                steeringValue += steeringUp * -1;
             } else {
                 steeringValue += steeringUp;
             }
@@ -223,13 +224,13 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         else if (binding.equals("Ups")) {
             if (value) {
                 accelerationValue -= accelerationUp;
-            } else{
+            } else {
                 accelerationValue += accelerationUp;
             }
-            
+
             player.accelerate(accelerationValue);
             player.setCollisionShape(CollisionShapeFactory.createDynamicMeshShape(findGeom(carNode, "Car")));
-            
+
         } else if (binding.equals("Downs")) {
             if (value) {
                 player.brake(brakeUp);
@@ -243,9 +244,10 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
             }
         }
     }
-    
-    public void resetGame(){
-        tempInicial = System.currentTimeMillis();
+
+    public void resetGame() {
+//        tempInicial = System.currentTimeMillis();
+        timer = 0.0f;
         player.setPhysicsLocation(Vector3f.ZERO);
         player.setPhysicsRotation(new Matrix3f());
         player.setLinearVelocity(Vector3f.ZERO);
@@ -262,34 +264,36 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
         volta1 = false;
         volta2 = false;
     }
-    
+
     @Override
     public void simpleUpdate(float tpf) {
         verificarVolta();
-        
+
         //Código do programa...
-        long tempFinal = System.currentTimeMillis();
-	long dif = (tempFinal - tempInicial)/1000;
-        
-        if(dif > 90){
+//        long tempFinal = System.currentTimeMillis();
+//	long dif = (tempFinal - tempInicial)/1000;
+        timer += tpf;
+
+        if (timer > 90.0f) {
             steeringUp = 0;
             accelerationUp = 0;
             accelerationValue = 0;
             brakeUp = 0;
         }
-        
-        if(contInicial){
-            if(dif > 5){
+
+        if (contInicial) {
+            if (timer > 5.0f) {
                 steeringUp = .5f;
                 accelerationUp = 800;
                 brakeUp = 40;
-                
-                tempInicial = System.currentTimeMillis();
+
+//                tempInicial = System.currentTimeMillis();
+                timer = 0.0f;
                 contInicial = false;
             }
         }
-        
-        System.out.println("Pontos: "+pontos + " - Tempo: "+dif);
+
+        System.out.println("Pontos: " + pontos + " - Tempo: " + (int)timer);
     }
 
     public void verificarVolta() {
@@ -304,7 +308,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
             volta2 = false;
             pontos += 100;
             meioPonto = true;
-        }else if(volta2 && meioPonto){
+        } else if (volta2 && meioPonto) {
             meioPonto = false;
             pontos += 50;
         }
