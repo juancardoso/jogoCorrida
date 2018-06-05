@@ -63,12 +63,12 @@ public class PhysicsGame {
         Box boxMesh = new Box(1f,0.1f,1f); 
         Geometry boxGeo = new Geometry("A Textured Box", boxMesh); 
         Material boxMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"); 
-        Texture monkeyTex = assetManager.loadTexture("Textures/faustop.jpeg"); 
+        Texture monkeyTex = assetManager.loadTexture("Textures/faustaoTop2.jpg"); 
         boxMat.setTexture("ColorMap", monkeyTex);
         boxGeo.setMaterial(boxMat); 
 //        boxGeo.setLocalTranslation(0,-4,-5);
         boxGeo.setLocalTranslation(10,12,5);
-        boxGeo.setLocalScale(300,0,300);
+        boxGeo.setLocalScale(200,0,200);
         boxGeo.addControl(new RigidBodyControl(new BoxCollisionShape(new Vector3f(300,0.1f,300)), 0));
         rootNode.attachChild(boxGeo); 
         space.add(boxGeo);
