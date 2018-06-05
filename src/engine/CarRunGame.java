@@ -97,7 +97,7 @@ public class CarRunGame extends SimpleApplication implements ActionListener {
          */
         nifty.loadStyleFile("nifty-default-styles.xml");
         nifty.loadControlFile("nifty-default-controls.xml");
-        nifty.registerSound("intro", "Interface/sound/19546__tobi123__Gong_mf2.wav");
+        nifty.registerSound("intro", "Interface/sound/music.wav");
         nifty.registerMusic("credits", "Interface/sound/Loveshadow_-_Almost_Given_Up.ogg");
         nifty.registerMouseCursor("hand", "Interface/mouse-cursor-hand.png", 5, 4);
 
